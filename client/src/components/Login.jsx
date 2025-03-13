@@ -2,27 +2,13 @@ import { useForm } from "react-hook-form";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import logo from "../assets/logo.png";
+
 
 export default function Login() {
   const { login, user } = useContext(AuthContext);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if(!user) {
-      return
-    } else {
-      if (user.role === "user") {
-        navigate("/meineAnfragen");
-      } else if (user.role === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-        return
-      }
-    }
-    
-  
-  }, [user]);
 
   const {
     register,
@@ -36,9 +22,9 @@ export default function Login() {
   return (
     <>
       <div className="pt-28 h-fit bg-gray-50 relative overflow-y-auto lg:ml-64">
-        <div className="flex justify-center items-center h-1/5 bg-cover bg-center ml-auto mr-auto lg:w-3/12 mt-0 mb-4">
+        <div className="flex justify-center items-center h-1/5 bg-cover bg-center ml-auto mr-auto lg:w-1/12 mt-16 mb-4">
           <img
-            src="https://d2nk66epwbpimf.cloudfront.net/images/345249fd-0959-4762-bfbc-80ca4247abbb/54ad38e7-f4b4-4dc6-9e80-21e06958a192.png"
+            src={logo}
             alt="logo"
           />
         </div>
@@ -47,9 +33,6 @@ export default function Login() {
           <div className="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <h1 className="font-anek text-md font-bold leading-tight tracking-tight text-gray-900 md:text-xl dark:text-white">
-                  Melde dich hier mit deinem Konto an:
-                </h1>
                 <form
                   className="space-y-4 md:space-y-6"
                   onSubmit={handleSubmit(onSubmit)}

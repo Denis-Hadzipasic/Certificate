@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/errorHandler.js");
 
 const userRouter = require("./routes/user-route.js");
+const productRoute = require("./routes/product-route.js");
 
 require("./db.js");
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/user", userRouter);
+app.use("/product", productRoute);
 
 app.use(errorHandler);
 

@@ -1,11 +1,10 @@
-import { useContext, useEffect } from "react";
-import Sidebar from "../shared/Sidebar";
-import { NavLink } from "react-router-dom";
-import Chart from "react-apexcharts";
+import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import Sidebar from "../Sidebar";
 
 export default function AdminDashboard() {
   const {
+    user
   } = useContext(AuthContext);
 
 
@@ -32,21 +31,6 @@ export default function AdminDashboard() {
                         Budget:
                       </h3>
 
-                      {budgetAmount === 0 ? (
-                        <NavLink
-                          to={"/admin/budgetVerwaltenIntern"}
-                          className="text-blue-600 hover:text-blue-800 font-semibold text-2xl rounded-lg px-2 py-2 transition duration-300 ease-in-out hover:bg-blue-100"
-                        >
-                          Budget erstellen
-                        </NavLink>
-                      ) : (
-                        <span className="px-2 text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                          {`${budgetAmount.toLocaleString("de-DE", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}€`}
-                        </span>
-                      )}
                       <div className="invisible flex items-center text-green-500 text-base font-bold mt-2">
                         14.6%
                         <svg
@@ -68,14 +52,14 @@ export default function AdminDashboard() {
                       <h3 className="mb-2 text-base font-semibold text-gray-500">
                         Bisher genehmigt:
                       </h3>
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                      {/* <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
                         {`${totalAmount.toLocaleString("de-DE")},${
                           totalAmountCents === 0
                             ? "00"
                             : totalAmountCents.toString().padStart(2, "0")
                         }€`}
-                      </span>
-                      <div
+                      </span> */}
+                      {/* <div
                         className={`${
                           differenceInEuros >= 0
                             ? "flex items-center text-green-500 text-base font-bold mt-2"
@@ -118,7 +102,7 @@ export default function AdminDashboard() {
                             />
                           </svg>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -127,10 +111,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div className="flex-shrink-0">
                       <h3 className="mb-2 text-base font-semibold text-gray-500">
-                        Anfragen in {selectedMonth} {selectedYear}:
+                        Anfragen in 
                       </h3>
                       <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        {allApprovals?.length}
                       </span>
                     </div>
 
@@ -140,11 +123,7 @@ export default function AdminDashboard() {
                           Noch öffen:
                         </span>
                         <span className="text-green-500">
-                          {allApprovals?.filter(
-                            (approval) =>
-                              approval.status === "Neu" ||
-                              approval.status === "In Prüfung"
-                          ).length || 0}
+                     
                         </span>
 
                         <svg
@@ -168,9 +147,7 @@ export default function AdminDashboard() {
                           Abgeschlossen:
                         </span>
                         <span className="text-blue-500">
-                          {allApprovals?.filter(
-                            (approval) => approval.status === "Genehmigt"
-                          ).length || 0}
+                    
                         </span>
 
                         <svg
@@ -193,9 +170,7 @@ export default function AdminDashboard() {
                           Abgelehnt:
                         </span>
                         <span className="text-red-500">
-                          {allApprovals?.filter(
-                            (approval) => approval.status === "Abgelehnt"
-                          ).length || 0}
+                   
                         </span>
 
                         <svg
@@ -220,13 +195,10 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div className="flex-shrink-0">
                       <h3 className="mb-2 text-base font-semibold text-gray-500">
-                        Budget {selectedYear}:
+                        Budget 
                       </h3>
                       <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        {`${totalBudgetForYear.toLocaleString("de-DE", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}€`}
+            
                       </span>
                       <div className="invisible flex items-center text-green-500 text-base font-bold mt-2">
                         <svg
@@ -249,15 +221,9 @@ export default function AdminDashboard() {
                         Bisher genehmigt:
                       </h3>
                       <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        {`${(
-                          totalYearlyAmount +
-                          totalYearlyCents / 100
-                        ).toLocaleString("de-DE", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}€`}
+   
                       </span>
-                      <div
+                      {/* <div
                         className={`${
                           differenceInEurosForYear >= 0
                             ? "flex items-center text-green-500 text-base font-bold mt-2"
@@ -300,7 +266,7 @@ export default function AdminDashboard() {
                             />
                           </svg>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -309,45 +275,17 @@ export default function AdminDashboard() {
                 <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8  2xl:col-span-2">
                   <div className="flex items-center justify-end mb-4">
                     <div className="flex items-center">
-                      <select
-                        value={selectedYear}
-                        onChange={(e) =>
-                          setSelectedYear(Number(e.target.value))
-                        }
-                        className="border-gray-300 border-2 p-2 rounded-tl-md rounded-bl-md"
-                      >
-                        {years.map((year) => (
-                          <option key={year} value={year}>
-                            {year}
-                          </option>
-                        ))}
-                      </select>
-                      <select
-                        value={selectedMonth}
-                        onChange={(e) => setSelectedMonth(e.target.value)}
-                        className="border-gray-300 border-2 p-2 rounded-tr-md rounded-br-md"
-                      >
-                        {months.map((month) => (
-                          <option key={month} value={month}>
-                            {month}
-                          </option>
-                        ))}
-                      </select>
+
+
                     </div>
                   </div>
 
-                  <Chart
-                    options={chartOptions}
-                    series={chartOptions.series}
-                    type="area"
-                    height={450}
-                  />
                 </div>
                 <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
                   <div className="mb-4 flex items-center justify-between">
                     <div>
                       <h3 className="text-xl font-bold text-gray-900 mb-2">
-                        Monatsübersicht {selectedYear}:
+                        Monatsübersicht 
                       </h3>
                     </div>
                   </div>
@@ -385,68 +323,7 @@ export default function AdminDashboard() {
                               </tr>
                             </thead>
                             <tbody className="bg-white">
-                              {months.map((month) => {
-                                const budget = allBudgets?.find(
-                                  (b) =>
-                                    b.year === selectedYear && b.month === month
-                                );
-                                const budgetAmount = budget ? budget.amount : 0;
-
-                                const approved = yearlyApprovals?.filter(
-                                  (approval) =>
-                                    approval.year === selectedYear &&
-                                    approval.month === month &&
-                                    approval.status === "Genehmigt"
-                                );
-
-                                let totalApprovedAmount = 0;
-                                if (approved) {
-                                  approved.forEach((element) => {
-                                    const {
-                                      expenseAmount = 0,
-                                      expenseAmountCent = 0,
-                                    } = element;
-                                    totalApprovedAmount +=
-                                      expenseAmount + expenseAmountCent / 100;
-                                  });
-                                }
-
-                                // Calculate the difference between budget and approved amounts
-                                const differenceInEuros =
-                                  budgetAmount - totalApprovedAmount;
-
-                                // Format numbers with a dot as thousand separator and comma for decimal
-                                const formatNumber = (number) =>
-                                  new Intl.NumberFormat("de-DE", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  }).format(number);
-
-                                return (
-                                  <tr key={month}>
-                                    <td className="px-4 py-2 whitespace-nowrap text-sm font-semibold text-gray-500">
-                                      {month}
-                                    </td>
-                                    <td className="px-4 py-2 text-center whitespace-nowrap text-sm font-semibold text-gray-900">
-                                      {formatNumber(budgetAmount) + "€"}
-                                    </td>
-                                    <td className="px-4 py-2 text-center whitespace-nowrap text-sm font-semibold text-gray-500">
-                                      {formatNumber(totalApprovedAmount) + "€"}
-                                    </td>
-                                    <td
-                                      className={`px-4 py-2 text-center whitespace-nowrap text-sm font-semibold ${
-                                        differenceInEuros < 0
-                                          ? "text-red-500"
-                                          : differenceInEuros === 0
-                                          ? "text-gray-900"
-                                          : "text-green-500"
-                                      }`}
-                                    >
-                                      {formatNumber(differenceInEuros) + "€"}
-                                    </td>
-                                  </tr>
-                                );
-                              })}
+                      
                             </tbody>
                           </table>
                         </div>

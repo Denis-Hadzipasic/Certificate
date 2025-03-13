@@ -36,7 +36,7 @@ const login = asyncWrapper(async (req, res, next) => {
     throw new ErrorResponse("Incorrect Password!", 401);
   }
 
-  const payload = { id: user._id, logInID: user.logInID };
+  const payload = { id: user._id, logInID: user.logInID, role: user.role };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: "480m",

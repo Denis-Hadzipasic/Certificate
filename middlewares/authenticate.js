@@ -1,13 +1,12 @@
 const jwt = require("jsonwebtoken");
+const ErrorResponse = require("../utils/ErrorResponse");
 
 const authenticate = (req, res, next) => {
   try {
-    const {
-      cookies: { access_token: token },
-    } = req;
+    const { access_token: token } = req.cookies;
 
     if (!token) {
-      throw new Error("Forbidden!");
+      throw new ErrorResponse("Forbidden!", 403);
     }
 
     const payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -16,8 +15,7 @@ const authenticate = (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log(error);
-    res.status(403).send("Forbidden!");
+    next(error);
   }
 };
 

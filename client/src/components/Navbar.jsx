@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import logoNav from "../assets/logoNav.png";
 
 export default function Navbar() {
   const { isLoading, user, logout } = useContext(AuthContext);
@@ -12,20 +13,16 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
               <NavLink
-                to={user?.role !== "user" ? "/admin/dashboard" : "/meineAnfragen"}
-                className="font-bold flex items-center lg:ml-2.5"
+                to="/"
+                className="font-medium flex items-center lg:ml-2.5"
               >
-                <img
-                  src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1720596411/favicon_eighgd.png"
-                  className="h-14 mr-2"
-                  alt="Rent Group Logo"
-                />
+                <img src={logoNav} className="h-14 mr-2" alt="logo" />
                 <div className="flex flex-col">
                   <span className="font-anek text-xl self-center whitespace-nowrap">
-                    Rent.Group
+                    Flaschenzertifikate
                   </span>
                   <span className="font-anek self-center whitespace-nowrap">
-                    München
+                    Standort München
                   </span>
                 </div>
               </NavLink>
@@ -63,13 +60,47 @@ export default function Navbar() {
             </div>
             <div className="flex items-center">
               {!user ? (
-                <p className="hidden">Loading</p>
+                <NavLink to="login">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={56}
+                    height={56}
+                    viewBox="0 0 48 48"
+                    className="px-2 py-1 rounded-md transition-all duration-300 hover:bg-gray-200 hover:scale-105"
+                  >
+                    <g fill="currentColor">
+                      <path d="M32 20a8 8 0 1 1-16 0a8 8 0 0 1 16 0"></path>
+                      <path
+                        fillRule="evenodd"
+                        d="M23.184 43.984C12.517 43.556 4 34.772 4 24C4 12.954 12.954 4 24 4s20 8.954 20 20s-8.954 20-20 20h-.274q-.272 0-.542-.016M11.166 36.62a3.028 3.028 0 0 1 2.523-4.005c7.796-.863 12.874-.785 20.632.018a2.99 2.99 0 0 1 2.498 4.002A17.94 17.94 0 0 0 42 24c0-9.941-8.059-18-18-18S6 14.059 6 24c0 4.916 1.971 9.373 5.166 12.621"
+                        clipRule="evenodd"
+                      ></path>
+                    </g>
+                  </svg>
+                </NavLink>
               ) : (
-                <p className="text-2xl font-bold font-anek text-gray-800">
-                  <button onClick={() => logout()} className="ml-4">
-                    Logout
-                  </button>
-                </p>
+                <span
+                  onClick={() => logout()}
+                  className="group flex font-medium items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-200 hover:scale-105"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    className="group-hover:text-gray-700 group-hover:scale-110 transition-transform duration-300 cursor-pointer"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M7.023 5.5a9 9 0 1 0 9.953 0M12 2v8"
+                      color="currentColor"
+                    />
+                  </svg>
+                </span>
               )}
             </div>
           </div>

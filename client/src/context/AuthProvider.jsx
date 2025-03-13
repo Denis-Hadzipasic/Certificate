@@ -10,6 +10,8 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log(user);
+
   useEffect(() => {
     axiosClient
       .get("/user/getUserProfile")
@@ -21,7 +23,7 @@ export default function AuthProvider({ children }) {
         setUser(null);
       })
       .finally(() => {
-        setIsLoading(null);
+        setIsLoading(false);
       });
   }, []);
 
@@ -30,8 +32,8 @@ export default function AuthProvider({ children }) {
       .post("/user/login", data)
       .then((response) => {
         setUser(response.data);
-        navigate("/");
-        console.log("success")
+        navigate("/admin/dashboard");
+        console.log("success");
       })
       .catch((error) => {
         console.log(error);
@@ -46,7 +48,8 @@ export default function AuthProvider({ children }) {
     axiosClient
       .put("/user/logout", data)
       .then((response) => {
-        console.log("logged out")
+        setUser(null);
+        console.log("logged out");
         navigate("/");
       })
       .catch((error) => {
