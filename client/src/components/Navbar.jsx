@@ -6,6 +6,8 @@ import logoNav from "../assets/logoNav.png";
 export default function Navbar() {
   const { isLoading, user, logout } = useContext(AuthContext);
 
+  console.log(user)
+
   return (
     <nav className="bg-white border-b border-gray-200 fixed z-30 w-full">
       {!isLoading && (

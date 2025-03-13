@@ -8,6 +8,8 @@ import Authorize from "./utils/Authorize";
 import Protected from "./utils/Protected";
 import CreateProduct from "./components/admin/CreateProduct";
 import CreateCertificateRange from "./components/admin/CreateCertificateRange";
+import ProductList from "./components/admin/ProductList";
+import EditProduct from "./components/admin/EditProduct";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/admin" element={<Authorize role="admin" />}>
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="newProduct" element={<CreateProduct />} />
+            <Route path="editProduct/:id" element={<EditProduct />} />
+            <Route path="productList" element={<ProductList />} />
             <Route path="newProduct" element={<CreateCertificateRange />} />
           </Route>
         </Route>

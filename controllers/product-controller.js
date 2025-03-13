@@ -3,7 +3,7 @@ const asyncWrapper = require("../utils/asyncWrapper");
 const ErrorResponse = require("../utils/ErrorResponse");
 
 const createProduct = asyncWrapper(async (req, res, next) => {
-  const { internNumber, manufacturerNumber, manufacturer } = req.body;
+  const { internNumber, manufacturerNumber, manufacturer, info } = req.body;
 
   const findProduct = await Product.findOne({ internNumber });
 
@@ -15,11 +15,70 @@ const createProduct = asyncWrapper(async (req, res, next) => {
     internNumber,
     manufacturerNumber,
     manufacturer,
+    info,
   });
 
   res.status(201).json(newProduct);
 });
 
+const editProduct = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const { internNumber, manufacturerNumber, manufacturer, info } = req.body;
+
+  const findProduct = await Product.findOne({ internNumber });
+
+  if (!findProduct) {
+    throw new ErrorResponse("Product not found!", 404);
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    id,
+    {
+      internNumber,
+      manufacturerNumber,
+      manufacturer,
+      info,
+    },
+    { new: true }
+  );
+
+  res.status(201).json(updatedProduct);
+});
+
+const deleteProduct = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const findProduct = await Product.findByIdAndDelete(id);
+
+  if (!findProduct) {
+    throw new ErrorResponse("Product not found!", 404);
+  }
+
+  res.status(201).json({ message: "Success" });
+});
+
+const getProductInfo = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const product = await Product.findById(id);
+
+  if (!product) {
+    throw new ErrorResponse("Product not found!", 404);
+  }
+
+  res.json(product);
+});
+
+const getAllProducts = asyncWrapper(async (req, res, next) => {
+  const allProducts = await Product.find({});
+
+  res.json(allProducts);
+});
+
 module.exports = {
   createProduct,
+  editProduct,
+  deleteProduct,
+  getProductInfo,
+  getAllProducts,
 };

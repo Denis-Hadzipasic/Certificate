@@ -1,12 +1,16 @@
 import axiosClient from "../../utils/axiosClient";
 import { useForm } from "react-hook-form";
 import Sidebar from "../Sidebar";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function CreateProduct() {
+export default function EditProduct() {
   const { setProductList } = useContext(AuthContext);
+
+  const [product, setProduct] = useState(null);
+
+  const { id } = useParams();
 
   const navigate = useNavigate();
 
@@ -16,9 +20,21 @@ export default function CreateProduct() {
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    axiosClient
+      .get(`product/getProductInfo/${id}`)
+      .then((response) => {
+        setProduct(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const onSubmit = (data) => {
     axiosClient
-      .post("/product/createProduct", data)
+      .put(`/product/editProduct/${id}`, data)
       .then((response) => {
         return axiosClient.get("/product/getAllProducts");
       })
@@ -52,6 +68,7 @@ export default function CreateProduct() {
                     </label>
                     <input
                       {...register("internNumber", { required: true })}
+                      defaultValue={product?.internNumber}
                       type="text"
                       name="internNumber"
                       id="internNumber"
@@ -70,6 +87,7 @@ export default function CreateProduct() {
                     </label>
                     <input
                       {...register("manufacturerNumber", { required: true })}
+                      defaultValue={product?.manufacturerNumber}
                       type="text"
                       name="manufacturerNumber"
                       id="manufacturerNumber"
@@ -89,6 +107,7 @@ export default function CreateProduct() {
                   </label>
                   <input
                     {...register("manufacturer", { required: true })}
+                    defaultValue={product?.manufacturer}
                     type="text"
                     name="manufacturer"
                     id="manufacturer"
@@ -106,6 +125,7 @@ export default function CreateProduct() {
                 </label>
                 <textarea
                   {...register("info", { required: true })}
+                  defaultValue={product?.info || ""}
                   name="info"
                   id="info"
                   placeholder="Kein Pflichtfeld"
