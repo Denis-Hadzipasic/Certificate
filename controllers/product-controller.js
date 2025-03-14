@@ -75,10 +75,33 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
   res.json(allProducts);
 });
 
+const searchProduct = asyncWrapper(async (req, res, next) => {
+  const { internNumber, manufacturerNumber } = req.query;
+
+  const searchCriteria = {};
+  if (internNumber) {
+    searchCriteria.internNumber = internNumber;
+  }
+  if (manufacturerNumber) {
+    searchCriteria.manufacturerNumber = manufacturerNumber;
+  }
+
+  const products = await Product.find(searchCriteria);
+
+  if (products.length === 0) {
+    return res
+      .status(404)
+      .json({ message: "No products found matching the criteria" });
+  }
+
+  return res.status(200).json(products);
+});
+
 module.exports = {
   createProduct,
   editProduct,
   deleteProduct,
   getProductInfo,
   getAllProducts,
+  searchProduct,
 };

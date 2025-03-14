@@ -7,6 +7,7 @@ const errorHandler = require("./middlewares/errorHandler.js");
 
 const userRouter = require("./routes/user-route.js");
 const productRoute = require("./routes/product-route.js");
+const rangeRoute = require("./routes/range-route.js");
 
 require("./db.js");
 
@@ -25,6 +26,7 @@ app.use(express.json());
 
 app.use("/user", userRouter);
 app.use("/product", productRoute);
+app.use("/range", rangeRoute);
 
 app.use(errorHandler);
 

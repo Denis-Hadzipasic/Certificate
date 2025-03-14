@@ -1,11 +1,13 @@
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import Sidebar from "../Sidebar";
-import ProductListCard from "./ProductListCard";
 import { NavLink } from "react-router-dom";
+import RangeListCard from "./RangeListCard";
 
-export default function ProductList() {
-  const { productList } = useContext(AuthContext);
+export default function RangeList() {
+  const { rangeList } = useContext(AuthContext);
+
+  console.log(rangeList);
 
   return (
     <div>
@@ -23,16 +25,17 @@ export default function ProductList() {
             <div className="py-6 px-4">
               <div className="mb-4 mt-4 w-full">
                 <div className="mt-4  bg-white p-4 shadow rounded-lg h-[calc(90vh-32px)] mx-auto">
-                <div className="flex justify-between mx-6">
+                  <div className="flex justify-between mx-6">
                   <h2 className="text-gray-500 text-lg font-semibold pb-4">
                     Nummernkreise:
                   </h2>
-                  <NavLink to={"/admin/newProduct"}
-                className="mb-2 btn w-32 bg-green-600 text-white hover:bg-green-700"
+                  <NavLink to={"/admin/newCertificateRange"}
+                className="mb-2 btn w-42 bg-green-600 text-white hover:bg-green-700"
               >
-                Neuer Artikel
+                Neuer Nummernkreis
               </NavLink>
               </div>
+
                   <div className="bg-gradient-to-r from-blue-300 to-blue-500 h-px mb-6"></div>
 
                   <div className="mx-auto px-4 mb-4 grid grid-cols-1 gap-6">
@@ -42,32 +45,29 @@ export default function ProductList() {
                           <thead className="bg-gray-100">
                             <tr>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Linde Fl.-Nr.
+                                Linde Fl.-Nr. von:
                               </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Hersteller Fl.-Nr.
+                                Linde Fl.-Nr. bis:
                               </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Hersteller
+                                Hersteller Fl.-Nr. von:
+                              </th>
+                              <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
+                                Hersteller Fl.-Nr. bis:
                               </th>
                               <th className="px-6 w-[400px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
                                 Zertifikat
                               </th>
-                              <th className="px-6 py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Zusätzliche Informationen
-                              </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                              Verwalten
+                                Verwalten
                               </th>
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
-                            {productList?.map((product) => {
+                            {rangeList?.map((range) => {
                               return (
-                                <ProductListCard
-                                  key={product._id}
-                                  product={product}
-                                />
+                                <RangeListCard key={range._id} range={range} />
                               );
                             })}
                           </tbody>

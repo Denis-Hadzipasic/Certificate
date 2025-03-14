@@ -1,0 +1,12 @@
+const { Schema, model } = require("mongoose");
+
+const rangeSchema = new Schema({
+  rangeStart: { type: Number, required: true, unique: true },
+  rangeEnd: { type: Number, required: true, unique: true },
+  manufacturerRangeStart: { type: Number, required: true, unique: true },
+  manufacturerRangeEnd: { type: Number, required: true, unique: true },
+  // certificate: { type: String, required: true },
+});
+const Range = model("Range", rangeSchema);
+
+module.exports = Range;

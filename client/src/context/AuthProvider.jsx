@@ -10,6 +10,7 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [productList, setProductList] = useState(null);
+  const [rangeList, setRangeList] = useState(null);
 
   useEffect(() => {
     axiosClient
@@ -32,7 +33,20 @@ export default function AuthProvider({ children }) {
       })
       .catch((error) => {
         console.log(error);
-        setUser(null);
+        setProductList(null);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
+    axiosClient
+      .get("/range/getAllRanges")
+      .then((response) => {
+        setRangeList(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        setRangeList(null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -49,6 +63,11 @@ export default function AuthProvider({ children }) {
       })
       .then((response) => {
         setProductList(response.data);
+
+        return axiosClient.get("/range/getAllRanges");
+      })
+      .then((response) => {
+        setRangeList(response.data);
 
         navigate("/admin/dashboard");
         console.log("success");
@@ -77,7 +96,16 @@ export default function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ login, logout, user, isLoading, productList, setProductList }}
+      value={{
+        login,
+        logout,
+        user,
+        isLoading,
+        productList,
+        rangeList,
+        setProductList,
+        setRangeList,
+      }}
     >
       {children}
     </AuthContext.Provider>
