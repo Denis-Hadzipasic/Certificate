@@ -9,7 +9,7 @@ export default function AuthProvider({ children }) {
 
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [productList, setProductList] = useState(null)
+  const [productList, setProductList] = useState(null);
 
   useEffect(() => {
     axiosClient
@@ -25,7 +25,7 @@ export default function AuthProvider({ children }) {
         setIsLoading(false);
       });
 
-      axiosClient
+    axiosClient
       .get("/product/getAllProducts")
       .then((response) => {
         setProductList(response.data);
@@ -44,6 +44,12 @@ export default function AuthProvider({ children }) {
       .post("/user/login", data)
       .then((response) => {
         setUser(response.data);
+
+        return axiosClient.get("/product/getAllProducts");
+      })
+      .then((response) => {
+        setProductList(response.data);
+
         navigate("/admin/dashboard");
         console.log("success");
       })
@@ -70,7 +76,9 @@ export default function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ login, logout, user, isLoading, productList, setProductList }}>
+    <AuthContext.Provider
+      value={{ login, logout, user, isLoading, productList, setProductList }}
+    >
       {children}
     </AuthContext.Provider>
   );

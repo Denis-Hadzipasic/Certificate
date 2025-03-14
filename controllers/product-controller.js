@@ -25,7 +25,7 @@ const editProduct = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { internNumber, manufacturerNumber, manufacturer, info } = req.body;
 
-  const findProduct = await Product.findOne({ internNumber });
+  const findProduct = await Product.findById(id);
 
   if (!findProduct) {
     throw new ErrorResponse("Product not found!", 404);

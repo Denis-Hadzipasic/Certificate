@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { Bounce, ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Sidebar from "./components/Sidebar";
@@ -15,6 +16,20 @@ function App() {
   return (
     <>
       <Navbar />
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+        transition={Bounce}
+      />
 
       <Routes>
         <Route path="/" element={<Home />} />
