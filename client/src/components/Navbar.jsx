@@ -15,7 +15,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
               <NavLink
-                to="/"
+                to={user?.role === "admin" ? "/admin/productList" : user?.role === "user" ? "/user/search" : user?.role === null ? "/" : "/"}
                 className="font-medium flex items-center lg:ml-2.5"
               >
                 <img src={logoNav} className="h-14 mr-2" alt="logo" />
@@ -62,7 +62,7 @@ export default function Navbar() {
             </div>
             <div className="flex items-center">
               {!user ? (
-                <NavLink to="login">
+                <NavLink to="/">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={56}

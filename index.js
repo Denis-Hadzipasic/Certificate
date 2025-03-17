@@ -1,4 +1,5 @@
 require("dotenv/config");
+require("./db.js");
 
 const express = require("express");
 const cors = require("cors");
@@ -8,8 +9,6 @@ const errorHandler = require("./middlewares/errorHandler.js");
 const userRouter = require("./routes/user-route.js");
 const productRoute = require("./routes/product-route.js");
 const rangeRoute = require("./routes/range-route.js");
-
-require("./db.js");
 
 const port = process.env.PORT || 3000;
 

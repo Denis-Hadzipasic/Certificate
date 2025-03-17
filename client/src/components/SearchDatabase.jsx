@@ -5,7 +5,7 @@ import logo from "../assets/logo.png";
 import axiosClient from "../utils/axiosClient";
 import Sidebar from "./Sidebar";
 
-export default function Home() {
+export default function SearchDatabase() {
   const { login, user } = useContext(AuthContext);
 
   const [products, setProducts] = useState([]);
@@ -51,7 +51,7 @@ export default function Home() {
                       <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <input
                           type="text"
-                          placeholder="Suche nach Linde Flaschennummer"
+                          placeholder="Suche nach interner Flaschennummer"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           className="w-full p-2 border border-gray-300 rounded-md"
@@ -85,7 +85,7 @@ export default function Home() {
                             <h3 className="font-bold">
                               Hersteller: {product.manufacturer}
                             </h3>
-                            <p>Linde Flaschennummer: {product.internNumber}</p>
+                            <p>Interne Flaschennummer: {product.internNumber}</p>
                             <p>
                               Hersteller Flaschennummer:{" "}
                               {product.manufacturerNumber}

@@ -127,7 +127,7 @@ export default function ProductListCard({ product }) {
             <div className="flex flex-col gap-4">
               <div className="flex justify-center gap-8">
                 <div className="flex flex-col gap-2">
-                  <span className="font-medium">Linde Fl.Nr.</span>
+                  <span className="font-medium">Interne Fl.Nr.</span>
                   <span className="text-center text-[20px]">
                     {product.internNumber}
                   </span>

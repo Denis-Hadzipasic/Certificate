@@ -45,10 +45,10 @@ export default function RangeList() {
                           <thead className="bg-gray-100">
                             <tr>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Linde Fl.-Nr. von:
+                              Interne Fl.-Nr. von:
                               </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Linde Fl.-Nr. bis:
+                              Interne Fl.-Nr. bis:
                               </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
                                 Hersteller Fl.-Nr. von:

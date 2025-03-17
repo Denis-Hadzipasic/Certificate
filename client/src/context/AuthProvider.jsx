@@ -54,23 +54,29 @@ export default function AuthProvider({ children }) {
   }, []);
 
   const login = async (data) => {
+  
     axiosClient
       .post("/user/login", data)
       .then((response) => {
-        setUser(response.data);
-
-        return axiosClient.get("/product/getAllProducts");
-      })
-      .then((response) => {
-        setProductList(response.data);
-
-        return axiosClient.get("/range/getAllRanges");
-      })
-      .then((response) => {
-        setRangeList(response.data);
-
-        navigate("/admin/dashboard");
-        console.log("success");
+        const loggedInUser = response.data;
+        setUser(loggedInUser);
+  
+        return Promise.all([
+          axiosClient.get("/product/getAllProducts"),
+          axiosClient.get("/range/getAllRanges"),
+        ]).then(([productResponse, rangeResponse]) => {
+          setProductList(productResponse.data);
+          setRangeList(rangeResponse.data);
+  
+          // Redirect based on user role
+          if (loggedInUser.role === "admin") {
+            navigate("/admin/productList");
+          } else {
+            navigate("/user/search");
+          }
+  
+          console.log("Login success");
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -80,6 +86,7 @@ export default function AuthProvider({ children }) {
         setIsLoading(false);
       });
   };
+  
 
   const logout = async (data) => {
     axiosClient

@@ -3,7 +3,6 @@ import { Bounce, ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Sidebar from "./components/Sidebar";
-import Home from "./components/Home";
 import Authorize from "./utils/Authorize";
 import Protected from "./utils/Protected";
 import CreateProduct from "./components/admin/CreateProduct";
@@ -12,6 +11,9 @@ import EditProduct from "./components/admin/EditProduct";
 import RangeList from "./components/admin/RangeList";
 import EditRange from "./components/admin/EditRange";
 import CreateCertificateRange from "./components/admin/CreateRange";
+import SearchDatabase from "./components/SearchDatabase";
+import AuthorizeUser from "./utils/AuthorizeUser";
+import Forbidden from "./components/Forbidden";
 
 function App() {
   return (
@@ -33,11 +35,20 @@ function App() {
       />
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/sidebar" element={<Sidebar />} />
+        <Route path="/forbidden" element={<Forbidden />} />
+
+        <Route path="/" element={<Protected />}>
+          <Route path="/user" element={<AuthorizeUser role="user" />}>
+            <Route path="search" element={<SearchDatabase />} />
+            <Route path="productList" element={<ProductList />} />
+          </Route>
+        </Route>
+
         <Route path="/" element={<Protected />}>
           <Route path="/admin" element={<Authorize role="admin" />}>
+            <Route path="search" element={<SearchDatabase />} />
             <Route path="newProduct" element={<CreateProduct />} />
             <Route path="editProduct/:id" element={<EditProduct />} />
             <Route path="productList" element={<ProductList />} />

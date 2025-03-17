@@ -70,7 +70,7 @@ export default function EditRange() {
                         htmlFor="rangeStart"
                         className="mb-3 block text-base font-medium text-[#07074D]"
                       >
-                        Linde Fl.-Nr. von:
+                        Interne Fl.-Nr. von:
                       </label>
                       <input
                         {...register("rangeStart", { required: true })}
@@ -79,7 +79,7 @@ export default function EditRange() {
                         name="rangeStart"
                         id="rangeStart"
                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                        placeholder="Linde-Flaschennummer"
+                        placeholder="Interne-Flaschennummer"
                       />
                     </div>
                   </div>
@@ -89,7 +89,7 @@ export default function EditRange() {
                         htmlFor="rangeEnd"
                         className="mb-3 block text-base font-medium text-[#07074D]"
                       >
-                        Linde Fl.-Nr. von:
+                        Interne Fl.-Nr. von:
                       </label>
                       <input
                         {...register("rangeEnd", { required: true })}
@@ -122,7 +122,7 @@ export default function EditRange() {
                         name="manufacturerRangeStart"
                         id="manufacturerRangeStart"
                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                        placeholder="Linde-Flaschennummer"
+                        placeholder="Interne-Flaschennummer"
                       />
                     </div>
                   </div>

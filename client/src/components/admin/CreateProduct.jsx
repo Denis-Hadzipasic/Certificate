@@ -50,7 +50,7 @@ export default function CreateProduct() {
                       htmlFor="internNumber"
                       className="mb-3 block text-base font-medium text-[#07074D]"
                     >
-                      Linde Fl.-Nr.
+                      Interne Fl.-Nr.
                     </label>
                     <input
                       {...register("internNumber", { required: true })}
@@ -58,7 +58,7 @@ export default function CreateProduct() {
                       name="internNumber"
                       id="internNumber"
                       className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                      placeholder="Linde-Flaschennummer"
+                      placeholder="Interne-Flaschennummer"
                     />
                   </div>
                 </div>

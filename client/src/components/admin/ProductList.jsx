@@ -42,7 +42,7 @@ export default function ProductList() {
                           <thead className="bg-gray-100">
                             <tr>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Linde Fl.-Nr.
+                              Interne Fl.-Nr.
                               </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
                                 Hersteller Fl.-Nr.

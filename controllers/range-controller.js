@@ -3,19 +3,68 @@ const asyncWrapper = require("../utils/asyncWrapper");
 const ErrorResponse = require("../utils/ErrorResponse");
 
 const createRange = asyncWrapper(async (req, res, next) => {
-  const { rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd } = req.body;
+  const { rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd } =
+    req.body;
+
+  if (rangeEnd <= rangeStart) {
+    throw new ErrorResponse("rangeEnd muss größer als rangeStart sein!", 400);
+  }
+
+  if (manufacturerRangeEnd <= manufacturerRangeStart) {
+    throw new ErrorResponse(
+      "manufacturerRangeEnd muss größer als manufacturerRangeStart sein!",
+      400
+    );
+  }
 
   const findRange = await Range.findOne({ rangeStart });
-
   if (findRange) {
     throw new ErrorResponse("Range already exists!", 409);
+  }
+
+  const overlappingRange = await Range.findOne({
+    $or: [
+      {
+        $or: [
+          { rangeStart: { $lte: rangeStart }, rangeEnd: { $gte: rangeStart } },
+          { rangeStart: { $lte: rangeEnd }, rangeEnd: { $gte: rangeEnd } },
+          { rangeStart: { $gte: rangeStart }, rangeEnd: { $lte: rangeEnd } },
+        ],
+      },
+      {
+        $or: [
+          {
+            manufacturerRangeStart: { $lte: manufacturerRangeStart },
+            manufacturerRangeEnd: { $gte: manufacturerRangeStart },
+          },
+          {
+            manufacturerRangeStart: { $lte: manufacturerRangeEnd },
+            manufacturerRangeEnd: { $gte: manufacturerRangeEnd },
+          },
+          {
+            manufacturerRangeStart: { $gte: manufacturerRangeStart },
+            manufacturerRangeEnd: { $lte: manufacturerRangeEnd },
+          },
+        ],
+      },
+    ],
+  });
+
+  if (overlappingRange) {
+    throw new ErrorResponse("Range overlaps with an existing entry!", 409);
+  }
+
+  let certificateUrl = "";
+  if (req.file) {
+    certificateUrl = req.file.path;
   }
 
   const newRange = await Range.create({
     rangeStart,
     rangeEnd,
     manufacturerRangeStart,
-    manufacturerRangeEnd
+    manufacturerRangeEnd,
+    certificate: certificateUrl,
   });
 
   res.status(201).json(newRange);
@@ -23,7 +72,8 @@ const createRange = asyncWrapper(async (req, res, next) => {
 
 const editRange = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd } = req.body;
+  const { rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd } =
+    req.body;
 
   const findRange = await Range.findById(id);
 
@@ -37,7 +87,7 @@ const editRange = asyncWrapper(async (req, res, next) => {
       rangeStart,
       rangeEnd,
       manufacturerRangeStart,
-      manufacturerRangeEnd
+      manufacturerRangeEnd,
     },
     { new: true }
   );

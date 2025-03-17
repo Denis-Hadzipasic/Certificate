@@ -24,6 +24,13 @@ export default function RangeListCard({ range }) {
       });
   };
 
+  const getCertificateLink = (certificateUrl) => {
+    // Extract the portion of the URL after the last '/' and before the first '.'
+    const certificatePath = certificateUrl.split("-").pop(); // Get the last part after the last '/'
+    const certificateName = certificatePath.split(".")[0]; // Get everything before the first dot
+    return certificateName;
+  };
+
   return (
     <>
       <tr className="text-center">
@@ -43,15 +50,27 @@ export default function RangeListCard({ range }) {
           </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm font-medium text-gray-900">
+          <div className="text-sm font-medium text-gray-900">
             {range.manufacturerRangeEnd}
           </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
-            TBD
+            {range.certificate ? (
+              <a
+                href={range.certificate}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                {getCertificateLink(range.certificate)}
+              </a>
+            ) : (
+              "Kein vorhanden"
+            )}
           </div>
         </td>
+
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="flex gap-3 justify-center">
             <button
@@ -129,13 +148,13 @@ export default function RangeListCard({ range }) {
             <div className="flex flex-col gap-4">
               <div className="flex justify-center gap-8">
                 <div className="flex flex-col gap-2">
-                  <span className="font-medium">Linde Fl.Nr. von:</span>
+                  <span className="font-medium">Interne Fl.Nr. von:</span>
                   <span className="text-center text-[20px]">
                     {range.rangeStart}
                   </span>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <span className="font-medium">Linde Fl.Nr. bis:</span>
+                  <span className="font-medium">Interne Fl.Nr. bis:</span>
                   <span className="text-center text-[20px]">
                     {range.rangeEnd}
                   </span>
