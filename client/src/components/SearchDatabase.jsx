@@ -1,18 +1,18 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthProvider";
+import { useContext, useState } from "react";
 import logo from "../assets/logo.png";
 import axiosClient from "../utils/axiosClient";
 import Sidebar from "./Sidebar";
+import { AuthContext } from "../context/AuthProvider";
 
 export default function SearchDatabase() {
-  const { login, user } = useContext(AuthContext);
+  const { rangeList } = useContext(AuthContext);
 
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQueryManufacturer, setSearchQueryManufacturer] = useState("");
 
-  const navigate = useNavigate();
+  console.log(rangeList);
+  console.log(products);
 
   const handleSearch = async () => {
     axiosClient
@@ -39,13 +39,112 @@ export default function SearchDatabase() {
           <div id="main-content" className="h-[92vh] w-full bg-gray-50">
             <main>
               <div className="bg-gray-50 relative overflow-y-auto lg:ml-64">
+                <div className="mt-6 w-full overflow-x-auto">
+                  <table className="mx-auto w-11/12 min-w-[640px] table-auto border-collapse border border-gray-300">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider border border-gray-300">
+                          Interne Fl.-Nr.
+                        </th>
+                        <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider border border-gray-300">
+                          Hersteller Fl.-Nr.
+                        </th>
+                        <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider border border-gray-300">
+                          Hersteller
+                        </th>
+                        <th className="px-6 py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider border border-gray-300">
+                          Zusätzliche Informationen
+                        </th>
+                        <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider border border-gray-300">
+                          Internes Zertifikat
+                        </th>
+                        <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider border border-gray-300">
+                          Herstellerzertifikat
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {products.length > 0 ? (
+                        products.map((product) => {
+                          // Find matching range for internal number
+                          const matchingRange = rangeList.find(
+                            (range) =>
+                              product.internNumber >= range.rangeStart &&
+                              product.internNumber <= range.rangeEnd
+                          );
+
+                          // Find matching range for manufacturer number
+                          const matchingManufacturerRange = rangeList.find(
+                            (range) =>
+                              product.manufacturerNumber >=
+                                range.manufacturerRangeStart &&
+                              product.manufacturerNumber <=
+                                range.manufacturerRangeEnd
+                          );
+
+                          return (
+                            <tr key={product._id} className="text-center">
+                              <td className="px-4 py-3 border border-gray-300">
+                                {product.internNumber}
+                              </td>
+                              <td className="px-4 py-3 border border-gray-300">
+                                {product.manufacturerNumber}
+                              </td>
+                              <td className="px-6 py-3 border border-gray-300">
+                                {product.manufacturer}
+                              </td>
+                              <td className="px-6 py-3 border border-gray-300">
+                                {product.info || "-"}
+                              </td>
+                              <td className="px-6 py-3 border border-gray-300">
+                                {matchingRange?.internCertificate ? (
+                                  <a
+                                    href={matchingRange.internCertificate}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-500 underline"
+                                  >
+                                    Intern Zertifikat
+                                  </a>
+                                ) : (
+                                  "Kein vorhanden"
+                                )}
+                              </td>
+                              <td className="px-6 py-3 border border-gray-300">
+                                {matchingManufacturerRange?.manufacturerCertificate ? (
+                                  <a
+                                    href={
+                                      matchingManufacturerRange.manufacturerCertificate
+                                    }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-500 underline"
+                                  >
+                                    Hersteller Zertifikat
+                                  </a>
+                                ) : (
+                                  "Kein vorhanden"
+                                )}
+                              </td>
+                            </tr>
+                          )
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan="7" className="text-center py-4">
+                            Keine Produkte gefunden
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
                 <div className="flex justify-center items-center h-1/5 bg-cover bg-center ml-auto mr-auto lg:w-1/12 mt-16 mb-4">
                   <img src={logo} alt="logo" />
                 </div>
                 <section>
                   <div className="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <div className="w-full max-w-[600px] bg-white rounded-lg shadow-lg p-10">
-                      {/* Input Fields with Labels */}
                       <div className="flex gap-4">
                         <div className="flex-1">
                           <label className="block text-gray-700 font-medium mb-1">
@@ -76,42 +175,14 @@ export default function SearchDatabase() {
                         </div>
                       </div>
 
-                      {/* Centered Button */}
                       <div className="flex justify-center mt-6">
                         <button
                           onClick={handleSearch}
-                          className="w-48 py-2 bg-blue-500 text-white text-lg rounded-md hover:bg-blue-700"
+                          className="w-48 py-2 bg-blue-500 text-white text-lg rounded-md hover:bg-blue-600"
                         >
                           Suchen
                         </button>
                       </div>
-                    </div>
-
-                    <div className="mt-6">
-                      {products.length > 0 ? (
-                        products.map((product) => (
-                          <div
-                            key={product._id}
-                            className="border rounded-md p-4 shadow-md cursor-pointer"
-                            onClick={() => viewProductDetails(product._id)}
-                          >
-                            <h3 className="font-bold">
-                              Hersteller: {product.manufacturer}
-                            </h3>
-                            <p>
-                              Interne Flaschennummer: {product.internNumber}
-                            </p>
-                            <p>
-                              Hersteller Flaschennummer:{" "}
-                              {product.manufacturerNumber}
-                            </p>
-                            <p></p>
-                            <p>Info: {product.info}</p>
-                          </div>
-                        ))
-                      ) : (
-                        <p>No products found</p>
-                      )}
                     </div>
                   </div>
                 </section>

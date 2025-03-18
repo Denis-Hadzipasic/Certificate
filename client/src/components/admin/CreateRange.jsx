@@ -18,11 +18,8 @@ export default function CreateCertificateRange() {
     register,
     handleSubmit,
     setValue,
-    // watch,
     formState: { errors },
   } = useForm();
-
-  // const certificateFile = watch("certificate");
 
   const onSubmit = (data) => {
     const formData = new FormData();
@@ -36,7 +33,7 @@ export default function CreateCertificateRange() {
     if (data.internCertificate) {
       formData.append("internCertificate", data.internCertificate);
     }
-  
+
     if (data.manufacturerCertificate) {
       formData.append("manufacturerCertificate", data.manufacturerCertificate);
     }
@@ -240,7 +237,10 @@ export default function CreateCertificateRange() {
                         accept="application/pdf"
                         onChange={(e) => {
                           if (e.target.files.length > 0) {
-                            setValue("manufacturerCertificate", e.target.files[0]);
+                            setValue(
+                              "manufacturerCertificate",
+                              e.target.files[0]
+                            );
                             setFileNameManufacturer(e.target.files[0].name);
                           } else {
                             setValue("manufacturerCertificate", null);
