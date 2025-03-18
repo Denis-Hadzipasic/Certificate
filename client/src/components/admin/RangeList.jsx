@@ -57,7 +57,10 @@ export default function RangeList() {
                                 Hersteller Fl.-Nr. bis:
                               </th>
                               <th className="px-6 w-[400px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Zertifikat
+                                Internes Zertifikat
+                              </th>
+                              <th className="px-6 w-[400px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
+                                Herstellerzertifikat
                               </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
                                 Verwalten

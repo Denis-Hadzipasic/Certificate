@@ -23,16 +23,17 @@ export default function ProductList() {
             <div className="py-6 px-4">
               <div className="mb-4 mt-4 w-full">
                 <div className="mt-4  bg-white p-4 shadow rounded-lg h-[calc(90vh-32px)] mx-auto">
-                <div className="flex justify-between mx-6">
-                  <h2 className="text-gray-500 text-lg font-semibold pb-4">
-                    Nummernkreise:
-                  </h2>
-                  <NavLink to={"/admin/newProduct"}
-                className="mb-2 btn w-32 bg-green-600 text-white hover:bg-green-700"
-              >
-                Neuer Artikel
-              </NavLink>
-              </div>
+                  <div className="flex justify-between mx-6">
+                    <h2 className="text-gray-500 text-lg font-semibold pb-4">
+                      Nummernkreise:
+                    </h2>
+                    <NavLink
+                      to={"/admin/newProduct"}
+                      className="mb-2 btn w-32 bg-green-600 text-white hover:bg-green-700"
+                    >
+                      Neuer Artikel
+                    </NavLink>
+                  </div>
                   <div className="bg-gradient-to-r from-blue-300 to-blue-500 h-px mb-6"></div>
 
                   <div className="mx-auto px-4 mb-4 grid grid-cols-1 gap-6">
@@ -42,7 +43,7 @@ export default function ProductList() {
                           <thead className="bg-gray-100">
                             <tr>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                              Interne Fl.-Nr.
+                                Interne Fl.-Nr.
                               </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
                                 Hersteller Fl.-Nr.
@@ -50,14 +51,18 @@ export default function ProductList() {
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
                                 Hersteller
                               </th>
-                              <th className="px-6 w-[400px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Zertifikat
-                              </th>
                               <th className="px-6 py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
                                 Zusätzliche Informationen
                               </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                              Verwalten
+                                Internes Zertifikat
+                              </th>
+                              <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
+                                Herrstellerzertifikat
+                              </th>
+
+                              <th className="px-6 w-[150px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
+                                Verwalten
                               </th>
                             </tr>
                           </thead>

@@ -3,8 +3,7 @@ const asyncWrapper = require("../utils/asyncWrapper");
 const ErrorResponse = require("../utils/ErrorResponse");
 
 const createRange = asyncWrapper(async (req, res, next) => {
-  const { rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd } =
-    req.body;
+  const { rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd } = req.body;
 
   if (rangeEnd <= rangeStart) {
     throw new ErrorResponse("rangeEnd muss größer als rangeStart sein!", 400);
@@ -54,21 +53,24 @@ const createRange = asyncWrapper(async (req, res, next) => {
     throw new ErrorResponse("Range overlaps with an existing entry!", 409);
   }
 
-  let certificateUrl = "";
-  if (req.file) {
-    certificateUrl = req.file.path;
-  }
+  // Correctly retrieve file paths from req.files
+  let certificateUrl = req.files?.internCertificate ? req.files.internCertificate[0].path : "";
+  let manufacturerCertificateteUrl = req.files?.manufacturerCertificate
+    ? req.files.manufacturerCertificate[0].path
+    : "";
 
   const newRange = await Range.create({
     rangeStart,
     rangeEnd,
     manufacturerRangeStart,
     manufacturerRangeEnd,
-    certificate: certificateUrl,
+    internCertificate: certificateUrl,
+    manufacturerCertificate: manufacturerCertificateteUrl,
   });
 
   res.status(201).json(newRange);
 });
+
 
 const editRange = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;

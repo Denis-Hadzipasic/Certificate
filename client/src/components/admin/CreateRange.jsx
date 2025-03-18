@@ -10,6 +10,7 @@ export default function CreateCertificateRange() {
   const { setRangeList } = useContext(AuthContext);
 
   const [fileName, setFileName] = useState("");
+  const [fileNameManufacturer, setFileNameManufacturer] = useState("");
 
   const navigate = useNavigate();
 
@@ -27,15 +28,17 @@ export default function CreateCertificateRange() {
     const formData = new FormData();
 
     Object.keys(data).forEach((key) => {
-      if (key !== "certificate") {
+      if (key !== "internCertificate" && key !== "manufacturerCertificate") {
         formData.append(key, data[key]);
       }
     });
 
-    if (data.certificate) {
-      formData.append("certificate", data.certificate);
-    } else {
-      return;
+    if (data.internCertificate) {
+      formData.append("internCertificate", data.internCertificate);
+    }
+  
+    if (data.manufacturerCertificate) {
+      formData.append("manufacturerCertificate", data.manufacturerCertificate);
     }
 
     axiosClient
@@ -152,10 +155,10 @@ export default function CreateCertificateRange() {
                   </div>
                 </div>
               </div>
-              <div className="w-full px-3">
+              <div className="flex justify-around w-full px-3">
                 <div className="mb-5 flex flex-col items-center">
                   <label
-                    htmlFor="certificate"
+                    htmlFor="internCertificate"
                     className="mb-3 block text-lg font-medium text-[#07074D] text-center"
                   >
                     Zertifikat
@@ -167,7 +170,7 @@ export default function CreateCertificateRange() {
 
                   <div className="flex flex-col items-center">
                     <label
-                      htmlFor="certificate"
+                      htmlFor="internCertificate"
                       className="flex items-center bg-gray-800 hover:bg-gray-700 text-white text-base px-5 py-1.5 outline-none rounded w-max cursor-pointer font-[sans-serif]"
                     >
                       <svg
@@ -181,14 +184,14 @@ export default function CreateCertificateRange() {
                       Datei auswählen
                       <input
                         type="file"
-                        id="certificate"
+                        id="internCertificate"
                         accept="application/pdf"
                         onChange={(e) => {
                           if (e.target.files.length > 0) {
-                            setValue("certificate", e.target.files[0]);
+                            setValue("internCertificate", e.target.files[0]);
                             setFileName(e.target.files[0].name);
                           } else {
-                            setValue("certificate", null);
+                            setValue("internCertificate", null);
                             setFileName("");
                           }
                         }}
@@ -200,6 +203,58 @@ export default function CreateCertificateRange() {
                       <p className="mt-5 text-sm text-gray-600 dark:text-gray-300 text-center">
                         <span className="font-bold">Ausgewählte Datei: </span>
                         {fileName}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mb-5 flex flex-col items-center">
+                  <label
+                    htmlFor="manufacturerCertificate"
+                    className="mb-3 block text-lg font-medium text-[#07074D] text-center"
+                  >
+                    Herrstellerzertifikat
+                    <span className="text-gray-600 text-sm">
+                      {" (Falls vorhanden)"}
+                    </span>
+                    :
+                  </label>
+
+                  <div className="flex flex-col items-center">
+                    <label
+                      htmlFor="manufacturerCertificate"
+                      className="flex items-center bg-gray-800 hover:bg-gray-700 text-white text-base px-5 py-1.5 outline-none rounded w-max cursor-pointer font-[sans-serif]"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 mr-2 fill-white inline"
+                        viewBox="0 0 32 32"
+                      >
+                        <path d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z" />
+                        <path d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z" />
+                      </svg>
+                      Datei auswählen
+                      <input
+                        type="file"
+                        id="manufacturerCertificate"
+                        accept="application/pdf"
+                        onChange={(e) => {
+                          if (e.target.files.length > 0) {
+                            setValue("manufacturerCertificate", e.target.files[0]);
+                            setFileNameManufacturer(e.target.files[0].name);
+                          } else {
+                            setValue("manufacturerCertificate", null);
+                            setFileNameManufacturer("");
+                          }
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+
+                    {fileNameManufacturer && (
+                      <p className="mt-5 text-sm text-gray-600 dark:text-gray-300 text-center">
+                        <span className="font-bold">Ausgewählte Datei: </span>
+                        {fileNameManufacturer}
                       </p>
                     )}
                   </div>

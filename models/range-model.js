@@ -5,7 +5,8 @@ const rangeSchema = new Schema({
   rangeEnd: { type: Number, required: true, unique: true },
   manufacturerRangeStart: { type: Number, required: true, unique: true },
   manufacturerRangeEnd: { type: Number, required: true, unique: true },
-  certificate: { type: String }
+  internCertificate: { type: String },
+  manufacturerCertificate: { type: String }
 });
 const Range = model("Range", rangeSchema);
 

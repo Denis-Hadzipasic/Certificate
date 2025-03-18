@@ -25,45 +25,72 @@ export default function RangeListCard({ range }) {
   };
 
   const getCertificateLink = (certificateUrl) => {
-    // Extract the portion of the URL after the last '/' and before the first '.'
-    const certificatePath = certificateUrl.split("-").pop(); // Get the last part after the last '/'
-    const certificateName = certificatePath.split(".")[0]; // Get everything before the first dot
+    const certificatePath = certificateUrl.split("-").pop();
+    const certificateName = certificatePath.split(".")[0];
     return certificateName;
+  };
+
+  const formatNumber = (num) => {
+    const str = num.toString();
+    if (str.length === 5) {
+      return `${str.slice(0, 2)} ${str.slice(2)}`;
+    } else if (str.length === 6) {
+      return `${str.slice(0, 3)} ${str.slice(3)}`;
+    } else if (str.length === 7) {
+      return `${str.slice(0, 1)} ${str.slice(1, 4)} ${str.slice(4)}`;
+    }
+    return str;
   };
 
   return (
     <>
       <tr className="text-center">
-        <td className="px-6 py-4 whitespace-nowrap">
-          <div className="text-sm font-medium text-gray-900">
-            {range.rangeStart}
+        <td className="px-4 whitespace-nowrap">
+          <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
+            {formatNumber(range.rangeStart)}
+          </div>
+        </td>
+        <td className="px-4 whitespace-nowrap">
+          <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
+            {formatNumber(range.rangeEnd)}
+          </div>
+        </td>
+        <td className="px-4 whitespace-nowrap">
+          <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
+            {formatNumber(range.manufacturerRangeStart)}
+          </div>
+        </td>
+        <td className="px-4 whitespace-nowrap">
+          <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
+            {formatNumber(range.manufacturerRangeEnd)}
           </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
-            {range.rangeEnd}
-          </div>
-        </td>
-        <td className="px-6 py-4 whitespace-nowrap">
-          <div className="text-sm font-medium text-gray-900">
-            {range.manufacturerRangeStart}
-          </div>
-        </td>
-        <td className="px-6 py-4 whitespace-nowrap">
-          <div className="text-sm font-medium text-gray-900">
-            {range.manufacturerRangeEnd}
-          </div>
-        </td>
-        <td className="px-6 py-4 whitespace-nowrap">
-          <div className="text-sm font-medium text-gray-900">
-            {range.certificate ? (
+            {range.internCertificate ? (
               <a
-                href={range.certificate}
+                href={range.internCertificate}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-500 underline"
               >
-                {getCertificateLink(range.certificate)}
+                {getCertificateLink(range.internCertificate)}
+              </a>
+            ) : (
+              "Kein vorhanden"
+            )}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="text-sm font-medium text-gray-900">
+            {range.manufacturerCertificate ? (
+              <a
+                href={range.manufacturerCertificate}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                {getCertificateLink(range.manufacturerCertificate)}
               </a>
             ) : (
               "Kein vorhanden"

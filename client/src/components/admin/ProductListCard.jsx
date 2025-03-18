@@ -5,7 +5,10 @@ import { AuthContext } from "../../context/AuthProvider";
 import { toast } from "react-toastify";
 
 export default function ProductListCard({ product }) {
-  const { setProductList } = useContext(AuthContext);
+  const { setProductList, productList, rangeList } = useContext(AuthContext);
+
+  console.log(product);
+  console.log(rangeList);
 
   const modalRef = useRef(null);
 
@@ -24,17 +27,29 @@ export default function ProductListCard({ product }) {
       });
   };
 
+  const formatNumber = (num) => {
+    const str = num.toString();
+    if (str.length === 5) {
+      return `${str.slice(0, 2)} ${str.slice(2)}`;
+    } else if (str.length === 6) {
+      return `${str.slice(0, 3)} ${str.slice(3)}`;
+    } else if (str.length === 7) {
+      return `${str.slice(0, 1)} ${str.slice(1, 4)} ${str.slice(4)}`;
+    }
+    return str;
+  };
+
   return (
     <>
       <tr className="text-center">
-        <td className="px-6 py-4 whitespace-nowrap">
-          <div className="text-sm font-medium text-gray-900">
-            {product.internNumber}
+        <td className="px-4 whitespace-nowrap">
+          <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
+            {formatNumber(product.internNumber)}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-nowrap">
-          <div className="text-sm font-medium text-gray-900">
-            {product.manufacturerNumber}
+        <td className="px-4 whitespace-nowrap">
+          <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
+            {formatNumber(product.manufacturerNumber)}
           </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
@@ -43,13 +58,85 @@ export default function ProductListCard({ product }) {
           </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
-          <div className="text-sm font-medium text-gray-900">TBD</div>
+          <div
+            className={
+              product.info === "" || product?.info === null
+                ? "text-gray-900"
+                : "text-sm font-medium text-red-500"
+            }
+          >
+            {product.info === "" || product?.info === null ? "-" : product.info}
+          </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
-            {product.info}
+            {(() => {
+              const matchingRange = rangeList.find(
+                (range) =>
+                  (product.internNumber >= range.rangeStart &&
+                    product.internNumber <= range.rangeEnd) ||
+                  (product.manufacturerNumber >= range.manufacturerRangeStart &&
+                    product.manufacturerNumber <= range.manufacturerRangeEnd)
+              );
+
+              return matchingRange?.certificate ? (
+                <NavLink
+                  href={matchingRange.certificate}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 underline"
+                >
+                  View Certificate
+                </NavLink>
+              ) : (
+                "Kein vorhanden"
+              );
+            })()}
           </div>
         </td>
+
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="text-sm font-medium text-gray-900">
+            {(() => {
+              const matchingRange = rangeList.find(
+                (range) =>
+                  (product.internNumber >= range.rangeStart &&
+                    product.internNumber <= range.rangeEnd) ||
+                  (product.manufacturerNumber >= range.manufacturerRangeStart &&
+                    product.manufacturerNumber <= range.manufacturerRangeEnd)
+              );
+
+              return matchingRange?.internCertificate ||
+                matchingRange?.manufacturerCertificate ? (
+                <>
+                  {matchingRange.internCertificate && (
+                    <NavLink
+                      href={matchingRange.internCertificate}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline block"
+                    >
+                      Intern Certificate
+                    </NavLink>
+                  )}
+                  {matchingRange.manufacturerCertificate && (
+                    <NavLink
+                      href={matchingRange.manufacturerCertificate}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline block"
+                    >
+                      Manufacturer Certificate
+                    </NavLink>
+                  )}
+                </>
+              ) : (
+                "Kein vorhanden"
+              );
+            })()}
+          </div>
+        </td>
+
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="flex gap-3 justify-center">
             <button
