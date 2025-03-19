@@ -53,7 +53,6 @@ const createRange = asyncWrapper(async (req, res, next) => {
     throw new ErrorResponse("Range overlaps with an existing entry!", 409);
   }
 
-  // Correctly retrieve file paths from req.files
   let certificateUrl = req.files?.internCertificate ? req.files.internCertificate[0].path : "";
   let manufacturerCertificateteUrl = req.files?.manufacturerCertificate
     ? req.files.manufacturerCertificate[0].path
