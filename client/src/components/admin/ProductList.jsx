@@ -5,8 +5,9 @@ import ProductListCard from "./ProductListCard";
 import { NavLink } from "react-router-dom";
 
 export default function ProductList() {
-  const { productList } = useContext(AuthContext);
+  const { productList, user } = useContext(AuthContext);
 
+  console.log(user);
   return (
     <div>
       <div className="flex overflow-hidden bg-white pt-16">
@@ -25,11 +26,15 @@ export default function ProductList() {
                 <div className="mt-4  bg-white p-4 shadow rounded-lg h-[calc(90vh-32px)] mx-auto">
                   <div className="flex justify-between mx-6">
                     <h2 className="text-gray-500 text-lg font-semibold pb-4">
-                      Nummernkreise:
+                      Flaschenübersicht:
                     </h2>
                     <NavLink
                       to={"/admin/newProduct"}
-                      className="mb-2 btn w-32 bg-green-600 text-white hover:bg-green-700"
+                      className={
+                        user.role && user.role !== "user"
+                          ? "mb-2 btn w-32 bg-green-600 text-white hover:bg-green-700"
+                          : "hidden"
+                      }
                     >
                       Neuer Artikel
                     </NavLink>
@@ -61,9 +66,13 @@ export default function ProductList() {
                                 Herrstellerzertifikat
                               </th>
 
-                              <th className="px-6 w-[150px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Verwalten
-                              </th>
+                              {user && user.role !== "user" ? (
+                                <th className="px-6 w-[150px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
+                                  Verwalten
+                                </th>
+                              ) : (
+                                <></>
+                              )}
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">

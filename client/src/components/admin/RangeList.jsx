@@ -5,9 +5,7 @@ import { NavLink } from "react-router-dom";
 import RangeListCard from "./RangeListCard";
 
 export default function RangeList() {
-  const { rangeList } = useContext(AuthContext);
-
-  console.log(rangeList);
+  const { rangeList, user } = useContext(AuthContext);
 
   return (
     <div>
@@ -26,15 +24,20 @@ export default function RangeList() {
               <div className="mb-4 mt-4 w-full">
                 <div className="mt-4  bg-white p-4 shadow rounded-lg h-[calc(90vh-32px)] mx-auto">
                   <div className="flex justify-between mx-6">
-                  <h2 className="text-gray-500 text-lg font-semibold pb-4">
-                    Nummernkreise:
-                  </h2>
-                  <NavLink to={"/admin/newCertificateRange"}
-                className="mb-2 btn w-42 bg-green-600 text-white hover:bg-green-700"
-              >
-                Neuer Nummernkreis
-              </NavLink>
-              </div>
+                    <h2 className="text-gray-500 text-lg font-semibold pb-4">
+                      Nummernkreise:
+                    </h2>
+                    <NavLink
+                      to={"/admin/newCertificateRange"}
+                      className={
+                        user.role && user.role !== "user"
+                          ? "mb-2 btn w-48 bg-green-600 text-white hover:bg-green-700"
+                          : "hidden"
+                      }
+                    >
+                      Neuer Nummernkreis
+                    </NavLink>
+                  </div>
 
                   <div className="bg-gradient-to-r from-blue-300 to-blue-500 h-px mb-6"></div>
 
@@ -44,27 +47,31 @@ export default function RangeList() {
                         <table className="w-full min-w-[640px] table-auto">
                           <thead className="bg-gray-100">
                             <tr>
-                              <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                              Interne Fl.-Nr. von:
+                              <th className="px-6 w-[250px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
+                                Interne Fl.-Nr. von:
                               </th>
-                              <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                              Interne Fl.-Nr. bis:
+                              <th className="px-6 w-[250px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
+                                Interne Fl.-Nr. bis:
                               </th>
-                              <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-6 w-[250px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
                                 Hersteller Fl.-Nr. von:
                               </th>
-                              <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-6 w-[250px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
                                 Hersteller Fl.-Nr. bis:
                               </th>
-                              <th className="px-6 w-[400px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-6 w-[300px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
                                 Internes Zertifikat
                               </th>
-                              <th className="px-6 w-[400px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-6 w-[300px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
                                 Herstellerzertifikat
                               </th>
-                              <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Verwalten
-                              </th>
+                              {user && user.role !== "user" ? (
+                                <th className="px-6 w-[200px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
+                                  Verwalten
+                                </th>
+                              ) : (
+                                <></>
+                              )}
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">

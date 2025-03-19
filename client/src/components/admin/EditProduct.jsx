@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import Sidebar from "../Sidebar";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function EditProduct() {
@@ -138,17 +138,17 @@ export default function EditProduct() {
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base text-lg font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                   />
                 </div>
-                <div className="flex flex-col items-center">
+                <div className="flex gap-4 justify-center">
                   <button className="bg-gradient-to-b from-gray-700 to-gray-900 text-lg font-medium p-2 mt-2 md:pd-2 text-white uppercase w-48 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
                     ÜBERMITTELN
                   </button>
-                  <button
+                  <NavLink
                     type="button"
-                    onClick={() => navigate(-1)}
-                    className="bg-gradient-to-b from-red-400 to-red-700 text-lg font-medium p-2 mt-2 md:pd-2 text-white uppercase w-48 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                    to={"/admin/productList"}
+                    className="text-center bg-gradient-to-b from-red-400 to-red-700 text-lg font-medium p-2 mt-2 md:pd-2 text-white uppercase w-48 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                   >
                     Abbrechen
-                  </button>
+                  </NavLink>
                 </div>
               </form>
             </div>

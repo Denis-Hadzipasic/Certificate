@@ -168,7 +168,7 @@ export default function EditRange() {
                     />
                   </div>
                 </div>
-                <div className="flex flex-col items-center">
+                <div className="flex justify-center gap-4">
                   <button className="bg-gradient-to-b from-gray-700 to-gray-900 text-lg font-medium p-2 mt-2 md:pd-2 text-white uppercase w-48 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
                     ÜBERMITTELN
                   </button>

@@ -27,6 +27,18 @@ export default function SearchDatabase() {
       });
   };
 
+  const formatNumber = (num) => {
+    const str = num.toString();
+    if (str.length === 5) {
+      return `${str.slice(0, 2)} ${str.slice(2)}`;
+    } else if (str.length === 6) {
+      return `${str.slice(0, 3)} ${str.slice(3)}`;
+    } else if (str.length === 7) {
+      return `${str.slice(0, 1)} ${str.slice(1, 4)} ${str.slice(4)}`;
+    }
+    return str;
+  };
+
   return (
     <>
       <div>
@@ -66,14 +78,12 @@ export default function SearchDatabase() {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {products.length > 0 ? (
                         products.map((product) => {
-                          // Find matching range for internal number
                           const matchingRange = rangeList.find(
                             (range) =>
                               product.internNumber >= range.rangeStart &&
                               product.internNumber <= range.rangeEnd
                           );
 
-                          // Find matching range for manufacturer number
                           const matchingManufacturerRange = rangeList.find(
                             (range) =>
                               product.manufacturerNumber >=
@@ -85,15 +95,19 @@ export default function SearchDatabase() {
                           return (
                             <tr key={product._id} className="text-center">
                               <td className="px-4 py-3 border border-gray-300">
-                                {product.internNumber}
+                                <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
+                                  {formatNumber(product.internNumber)}
+                                </div>
                               </td>
                               <td className="px-4 py-3 border border-gray-300">
-                                {product.manufacturerNumber}
+                                <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
+                                  {formatNumber(product.manufacturerNumber)}
+                                </div>
                               </td>
                               <td className="px-6 py-3 border border-gray-300">
                                 {product.manufacturer}
                               </td>
-                              <td className="px-6 py-3 border border-gray-300">
+                              <td className="px-6 py-3 border border-gray-300 text-red-600 font-medium">
                                 {product.info || "-"}
                               </td>
                               <td className="px-6 py-3 border border-gray-300">
@@ -104,7 +118,7 @@ export default function SearchDatabase() {
                                     rel="noopener noreferrer"
                                     className="text-blue-500 underline"
                                   >
-                                    Intern Zertifikat
+                                    Internes Zertifikat
                                   </a>
                                 ) : (
                                   "Kein vorhanden"
@@ -120,14 +134,14 @@ export default function SearchDatabase() {
                                     rel="noopener noreferrer"
                                     className="text-blue-500 underline"
                                   >
-                                    Hersteller Zertifikat
+                                    Herstellerzertifikat
                                   </a>
                                 ) : (
                                   "Kein vorhanden"
                                 )}
                               </td>
                             </tr>
-                          )
+                          );
                         })
                       ) : (
                         <tr>

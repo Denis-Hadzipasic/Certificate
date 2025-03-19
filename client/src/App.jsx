@@ -43,6 +43,7 @@ function App() {
           <Route path="/user" element={<AuthorizeUser role="user" />}>
             <Route path="search" element={<SearchDatabase />} />
             <Route path="productList" element={<ProductList />} />
+            <Route path="rangeList" element={<RangeList />} />
           </Route>
         </Route>
 
