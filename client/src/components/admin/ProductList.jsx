@@ -2,43 +2,27 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import Sidebar from "../Sidebar";
 import ProductListCard from "./ProductListCard";
-import { NavLink } from "react-router-dom";
+import SearchForm from "./SearchForm";
 
 export default function ProductList() {
-  const { productList, user } = useContext(AuthContext);
+  const { productList } = useContext(AuthContext);
 
-  console.log(user);
   return (
     <div>
       <div className="flex overflow-hidden bg-white pt-16">
         <Sidebar />
-        <div
-          className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10"
-          id="sidebarBackdrop"
-        ></div>
-        <div
-          id="main-content"
-          className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-72"
-        >
+        <div id="main-content" className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-72">
           <main>
             <div className="py-6 px-4">
               <div className="mb-4 mt-4 w-full">
-                <div className="mt-4  bg-white p-4 shadow rounded-lg h-[calc(90vh-32px)] mx-auto">
+                <div className="mt-4 bg-white p-4 shadow rounded-lg h-[calc(90vh-32px)] mx-auto">
                   <div className="flex justify-between mx-6">
                     <h2 className="text-gray-500 text-lg font-semibold pb-4">
                       Flaschenübersicht:
                     </h2>
-                    <NavLink
-                      to={"/admin/newProduct"}
-                      className={
-                        user.role && user.role !== "user"
-                          ? "mb-2 btn w-32 bg-green-600 text-white hover:bg-green-700"
-                          : "hidden"
-                      }
-                    >
-                      Neuer Artikel
-                    </NavLink>
+                    <SearchForm /> {/* Add SearchForm component */}
                   </div>
+                  
                   <div className="bg-gradient-to-r from-blue-300 to-blue-500 h-px mb-6"></div>
 
                   <div className="mx-auto px-4 mb-4 grid grid-cols-1 gap-6">
@@ -63,27 +47,14 @@ export default function ProductList() {
                                 Internes Zertifikat
                               </th>
                               <th className="px-6 w-[200px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                Herrstellerzertifikat
+                                Herstellerzertifikat
                               </th>
-
-                              {user && user.role !== "user" ? (
-                                <th className="px-6 w-[150px] py-3 text-[13px] font-medium text-gray-500 uppercase tracking-wider">
-                                  Verwalten
-                                </th>
-                              ) : (
-                                <></>
-                              )}
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
-                            {productList?.map((product) => {
-                              return (
-                                <ProductListCard
-                                  key={product._id}
-                                  product={product}
-                                />
-                              );
-                            })}
+                            {productList?.map((product) => (
+                              <ProductListCard key={product._id} product={product} />
+                            ))}
                           </tbody>
                         </table>
                       </div>

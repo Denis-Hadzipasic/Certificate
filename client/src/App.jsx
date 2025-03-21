@@ -41,16 +41,16 @@ function App() {
 
         <Route path="/" element={<Protected />}>
           <Route path="/user" element={<AuthorizeUser role="user" />}>
-            <Route path="search" element={<SearchDatabase />} />
             <Route path="productList" element={<ProductList />} />
+            <Route path="searchDatabase" element={<SearchDatabase />} />
             <Route path="rangeList" element={<RangeList />} />
           </Route>
         </Route>
 
         <Route path="/" element={<Protected />}>
           <Route path="/admin" element={<Authorize role="admin" />}>
-            <Route path="search" element={<SearchDatabase />} />
             <Route path="newProduct" element={<CreateProduct />} />
+            <Route path="searchDatabase" element={<SearchDatabase />} />
             <Route path="editProduct/:id" element={<EditProduct />} />
             <Route path="productList" element={<ProductList />} />
             <Route

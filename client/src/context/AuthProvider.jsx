@@ -71,7 +71,7 @@ export default function AuthProvider({ children }) {
           if (loggedInUser.role === "admin") {
             navigate("/admin/productList");
           } else {
-            navigate("/user/search");
+            navigate("/user/productList");
           }
   
           console.log("Login success");
