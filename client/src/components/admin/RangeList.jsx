@@ -48,16 +48,10 @@ export default function RangeList() {
                           <thead className="bg-gray-100">
                             <tr>
                               <th className="px-6 w-[250px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
-                                Interne Fl.-Nr. von:
+                                Interner Nummernkreis:
                               </th>
                               <th className="px-6 w-[250px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
-                                Interne Fl.-Nr. bis:
-                              </th>
-                              <th className="px-6 w-[250px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
-                                Hersteller Fl.-Nr. von:
-                              </th>
-                              <th className="px-6 w-[250px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
-                                Hersteller Fl.-Nr. bis:
+                                Hersteller Nummernkreis:
                               </th>
                               <th className="px-6 w-[300px] py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wider">
                                 Internes Zertifikat

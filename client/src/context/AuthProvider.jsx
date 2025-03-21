@@ -68,7 +68,6 @@ export default function AuthProvider({ children }) {
           setProductList(productResponse.data);
           setRangeList(rangeResponse.data);
   
-          // Redirect based on user role
           if (loggedInUser.role === "admin") {
             navigate("/admin/productList");
           } else {

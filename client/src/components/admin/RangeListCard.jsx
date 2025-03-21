@@ -43,22 +43,23 @@ export default function RangeListCard({ range }) {
           <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
             {formatNumber(range.rangeStart)}
           </div>
-        </td>
-        <td className="px-4 whitespace-nowrap">
+          <span className="px-4 font-medium text-slate-800">bis</span>
           <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
             {formatNumber(range.rangeEnd)}
           </div>
         </td>
+
         <td className="px-4 whitespace-nowrap">
           <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
             {formatNumber(range.manufacturerRangeStart)}
           </div>
-        </td>
-        <td className="px-4 whitespace-nowrap">
+          <span className="px-4 font-medium text-slate-800">bis</span>
+
           <div className="btn w-[100px] bg-slate-100 text-slate-800 hover:bg-white-900">
             {formatNumber(range.manufacturerRangeEnd)}
           </div>
         </td>
+
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
             {range.internCertificate ? (

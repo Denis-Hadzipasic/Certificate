@@ -11,9 +11,6 @@ export default function SearchDatabase() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQueryManufacturer, setSearchQueryManufacturer] = useState("");
 
-  console.log(rangeList);
-  console.log(products);
-
   const handleSearch = async () => {
     axiosClient
       .get(
