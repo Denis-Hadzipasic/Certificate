@@ -1,11 +1,19 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import Sidebar from "../Sidebar";
 import { NavLink } from "react-router-dom";
 import RangeListCard from "./RangeListCard";
 
 export default function RangeList() {
-  const { rangeList, user } = useContext(AuthContext);
+  const { rangeList, user, setInternNumber, setManufacturerNumber, setSearched } =
+    useContext(AuthContext);
+
+  useEffect(() => {
+    setInternNumber("");
+    setManufacturerNumber("");
+    setSearched(false)
+
+  }, []);
 
   return (
     <div>
@@ -20,10 +28,10 @@ export default function RangeList() {
           className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-72"
         >
           <main>
-            <div className="py-6 px-4">
-              <div className="mb-4 mt-4 w-full">
+            <div className="pt-4 pb-6 px-4">
+              <div className="w-full">
                 <div className="mt-4  bg-white p-4 shadow rounded-lg h-[calc(90vh-32px)] mx-auto">
-                  <div className="flex justify-between mx-6">
+                  <div className="flex justify-between">
                     <h2 className="text-gray-500 text-lg font-semibold pb-4">
                       Nummernkreise:
                     </h2>

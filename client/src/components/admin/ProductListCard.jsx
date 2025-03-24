@@ -68,7 +68,7 @@ export default function ProductListCard({ product }) {
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
             {(() => {
-              const matchingRange = rangeList.find(
+              const matchingRange = rangeList?.find(
                 (range) =>
                   product.internNumber >= range.rangeStart &&
                   product.internNumber <= range.rangeEnd
@@ -92,7 +92,7 @@ export default function ProductListCard({ product }) {
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
             {(() => {
-              const matchingRange = rangeList.find(
+              const matchingRange = rangeList?.find(
                 (range) =>
                   (product.internNumber >= range.rangeStart &&
                     product.internNumber <= range.rangeEnd) ||

@@ -1,13 +1,19 @@
 import axiosClient from "../../utils/axiosClient";
 import { useForm } from "react-hook-form";
 import Sidebar from "../Sidebar";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function CreateProduct() {
-  const { setProductList } = useContext(AuthContext);
+  const { setProductList, setInternNumber, setManufacturerNumber, setSearched } = useContext(AuthContext);
+
+  useEffect(() => {
+    setInternNumber("");
+    setManufacturerNumber("");
+    setSearched(false)
+  }, []);
 
   const navigate = useNavigate();
 
@@ -25,11 +31,19 @@ export default function CreateProduct() {
       })
       .then((response) => {
         setProductList(response.data);
-        toast.success("Artikel eingetragen!")
+        toast.success("Artikel eingetragen!");
         navigate("/admin/productList");
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response) {
+          if (error.response.status === 409) {
+            toast.error("Produkt schon vorhanden");
+          } else {
+            toast.error("Die Dateigröße überschreitet 10 MB!");
+          }
+        } else {
+          toast.error("Netzwerkfehler oder Server nicht erreichbar!");
+        }
       });
   };
 
@@ -119,12 +133,12 @@ export default function CreateProduct() {
                   ÜBERMITTELN
                 </button>
                 <NavLink
-                    type="button"
-                    to={"/admin/productList"}
-                    className="text-center bg-gradient-to-b from-red-400 to-red-700 text-lg font-medium p-2 mt-2 md:pd-2 text-white uppercase w-48 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                  >
-                    Abbrechen
-                  </NavLink>
+                  type="button"
+                  to={"/admin/productList"}
+                  className="text-center bg-gradient-to-b from-red-400 to-red-700 text-lg font-medium p-2 mt-2 md:pd-2 text-white uppercase w-48 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                >
+                  Abbrechen
+                </NavLink>
               </div>
             </form>
           </div>

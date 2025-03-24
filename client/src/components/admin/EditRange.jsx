@@ -7,7 +7,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function EditRange() {
-  const { setRangeList } = useContext(AuthContext);
+  const { setRangeList, setInternNumber, setManufacturerNumber, setSearched } =
+    useContext(AuthContext);
 
   const [range, setRange] = useState(null);
 
@@ -22,6 +23,11 @@ export default function EditRange() {
   } = useForm();
 
   useEffect(() => {
+    setInternNumber("");
+    setManufacturerNumber("");
+    setSearched(false)
+
+
     axiosClient
       .get(`range/getRangeInfo/${id}`)
       .then((response) => {

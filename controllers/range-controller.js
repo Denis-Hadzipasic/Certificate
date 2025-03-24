@@ -3,7 +3,18 @@ const asyncWrapper = require("../utils/asyncWrapper");
 const ErrorResponse = require("../utils/ErrorResponse");
 
 const createRange = asyncWrapper(async (req, res, next) => {
-  const { rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd } = req.body;
+  let { rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd } = req.body;
+
+  rangeStart = Number(rangeStart);
+  rangeEnd = Number(rangeEnd);
+  manufacturerRangeStart = Number(manufacturerRangeStart);
+  manufacturerRangeEnd = Number(manufacturerRangeEnd);
+
+  console.log("Converted Values:", rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd);
+
+  if (isNaN(rangeStart) || isNaN(rangeEnd) || isNaN(manufacturerRangeStart) || isNaN(manufacturerRangeEnd)) {
+    throw new ErrorResponse("All range values must be valid numbers!", 400);
+  }
 
   if (rangeEnd <= rangeStart) {
     throw new ErrorResponse("rangeEnd muss größer als rangeStart sein!", 400);
@@ -54,7 +65,7 @@ const createRange = asyncWrapper(async (req, res, next) => {
   }
 
   let certificateUrl = req.files?.internCertificate ? req.files.internCertificate[0].path : "";
-  let manufacturerCertificateteUrl = req.files?.manufacturerCertificate
+  let manufacturerCertificateUrl = req.files?.manufacturerCertificate
     ? req.files.manufacturerCertificate[0].path
     : "";
 
@@ -64,11 +75,12 @@ const createRange = asyncWrapper(async (req, res, next) => {
     manufacturerRangeStart,
     manufacturerRangeEnd,
     internCertificate: certificateUrl,
-    manufacturerCertificate: manufacturerCertificateteUrl,
+    manufacturerCertificate: manufacturerCertificateUrl,
   });
 
   res.status(201).json(newRange);
 });
+
 
 
 const editRange = asyncWrapper(async (req, res, next) => {

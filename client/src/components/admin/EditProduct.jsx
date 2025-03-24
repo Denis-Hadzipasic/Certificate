@@ -7,9 +7,17 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function EditProduct() {
-  const { setProductList } = useContext(AuthContext);
+  const { setProductList, setInternNumber, setManufacturerNumber, setSearched } =
+    useContext(AuthContext);
 
   const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    setInternNumber("");
+    setManufacturerNumber("");
+    setSearched(false)
+
+  }, []);
 
   const { id } = useParams();
 

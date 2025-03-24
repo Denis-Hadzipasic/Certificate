@@ -1,18 +1,25 @@
 import axiosClient from "../../utils/axiosClient";
 import { useForm } from "react-hook-form";
 import Sidebar from "../Sidebar";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export default function CreateCertificateRange() {
-  const { setRangeList } = useContext(AuthContext);
+export default function CreateRange() {
+  const { setRangeList, setInternNumber, setManufacturerNumber, setSearched } = useContext(AuthContext);
 
   const [fileName, setFileName] = useState("");
   const [fileNameManufacturer, setFileNameManufacturer] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setInternNumber("");
+    setManufacturerNumber("");
+    setSearched(false)
+
+  }, []);
 
   const {
     register,

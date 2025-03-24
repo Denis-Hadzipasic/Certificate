@@ -11,6 +11,9 @@ export default function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [productList, setProductList] = useState(null);
   const [rangeList, setRangeList] = useState(null);
+  const [searched, setSearched] = useState(false);
+  const [internNumber, setInternNumber] = useState("");
+  const [manufacturerNumber, setManufacturerNumber] = useState("");
 
   useEffect(() => {
     axiosClient
@@ -27,9 +30,12 @@ export default function AuthProvider({ children }) {
       });
 
     axiosClient
-      .get("/product/getAllProducts")
+      .get(
+        `/product/getAllProducts?internNumber=${internNumber}&manufacturerNumber=${manufacturerNumber}`
+      )
       .then((response) => {
         setProductList(response.data);
+        console.log(internNumber)
       })
       .catch((error) => {
         console.log(error);
@@ -51,29 +57,28 @@ export default function AuthProvider({ children }) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [internNumber, manufacturerNumber]);
 
   const login = async (data) => {
-  
     axiosClient
       .post("/user/login", data)
       .then((response) => {
         const loggedInUser = response.data;
         setUser(loggedInUser);
-  
+
         return Promise.all([
           axiosClient.get("/product/getAllProducts"),
           axiosClient.get("/range/getAllRanges"),
         ]).then(([productResponse, rangeResponse]) => {
           setProductList(productResponse.data);
           setRangeList(rangeResponse.data);
-  
+
           if (loggedInUser.role === "admin") {
             navigate("/admin/productList");
           } else {
             navigate("/user/productList");
           }
-  
+
           console.log("Login success");
         });
       })
@@ -85,7 +90,6 @@ export default function AuthProvider({ children }) {
         setIsLoading(false);
       });
   };
-  
 
   const logout = async (data) => {
     axiosClient
@@ -100,6 +104,22 @@ export default function AuthProvider({ children }) {
       });
   };
 
+  const searchProducts = async ({ internNumber, manufacturerNumber } = {}) => {
+    setIsLoading(true);
+    try {
+      const response = await axiosClient.get("/product/getAllProducts", {
+        params: { internNumber, manufacturerNumber }, // Attach search parameters
+      });
+
+      setProductList(response.data);
+    } catch (error) {
+      console.error("Error fetching searched products:", error);
+      setProductList([]); // Ensure empty results on failure
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -111,6 +131,13 @@ export default function AuthProvider({ children }) {
         rangeList,
         setProductList,
         setRangeList,
+        searchProducts,
+        setInternNumber,
+        setManufacturerNumber,
+        searched,
+        setSearched, 
+        internNumber,
+        manufacturerNumber
       }}
     >
       {children}

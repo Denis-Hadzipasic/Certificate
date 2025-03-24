@@ -10,10 +10,10 @@ import ProductList from "./components/admin/ProductList";
 import EditProduct from "./components/admin/EditProduct";
 import RangeList from "./components/admin/RangeList";
 import EditRange from "./components/admin/EditRange";
-import CreateCertificateRange from "./components/admin/CreateRange";
 import SearchDatabase from "./components/SearchDatabase";
 import AuthorizeUser from "./utils/AuthorizeUser";
 import Forbidden from "./components/Forbidden";
+import CreateRange from "./components/admin/CreateRange";
 
 function App() {
   return (
@@ -55,7 +55,7 @@ function App() {
             <Route path="productList" element={<ProductList />} />
             <Route
               path="newCertificateRange"
-              element={<CreateCertificateRange />}
+              element={<CreateRange />}
             />
             <Route path="editCertificateRange/:id" element={<EditRange />} />
             <Route path="rangeList" element={<RangeList />} />
