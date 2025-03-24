@@ -5,14 +5,18 @@ import { NavLink } from "react-router-dom";
 import RangeListCard from "./RangeListCard";
 
 export default function RangeList() {
-  const { rangeList, user, setInternNumber, setManufacturerNumber, setSearched } =
-    useContext(AuthContext);
+  const {
+    rangeList,
+    user,
+    setInternNumber,
+    setManufacturerNumber,
+    setSearched,
+  } = useContext(AuthContext);
 
   useEffect(() => {
     setInternNumber("");
     setManufacturerNumber("");
-    setSearched(false)
-
+    setSearched(false);
   }, []);
 
   return (
