@@ -3,6 +3,7 @@ import axiosClient from "../../utils/axiosClient";
 import { useContext, useRef } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function RangeListCard({ range }) {
   const { setRangeList, user } = useContext(AuthContext);
@@ -24,6 +25,23 @@ export default function RangeListCard({ range }) {
       });
   };
 
+  const fetchCertificate = async (rangeId, type) => {
+    try {
+      console.log("Fetching certificate for:", rangeId, type); // Debugging
+  
+      const res = await axiosClient.get(`/range/getCertificateUrl/${rangeId}/${type}`);
+  
+      // Adjust URL format
+      const url = res.data.url.replace("raw", "image");
+      console.log("Certificate URL:", url); // Debugging
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error fetching certificate:", error.response?.data || error.message);
+    }
+  };
+  
+  
+  
   const formatNumber = (num) => {
     const str = num.toString();
     if (str.length === 5) {
@@ -63,14 +81,12 @@ export default function RangeListCard({ range }) {
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
             {range.internCertificate ? (
-              <a
-                href={range.internCertificate}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 underline"
-              >
-                Zur Datei
-              </a>
+               <button
+               onClick={() => fetchCertificate(range._id, "internCertificate")}
+               className="text-blue-500 underline"
+             >
+               Internes Zertifikat anzeigen
+             </button>
             ) : (
               "Kein vorhanden"
             )}
@@ -79,14 +95,12 @@ export default function RangeListCard({ range }) {
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
             {range.manufacturerCertificate ? (
-              <a
-                href={range.manufacturerCertificate}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 underline"
-              >
-                Zur Datei
-              </a>
+             <button
+             onClick={() => fetchCertificate(range._id, "manufacturerCertificate")}
+             className="text-blue-500 underline"
+           >
+             Hersteller-Zertifikat anzeigen
+           </button>
             ) : (
               "Kein vorhanden"
             )}

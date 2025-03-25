@@ -1,5 +1,6 @@
 const Range = require("../models/range-model");
 const asyncWrapper = require("../utils/asyncWrapper");
+const { cloudinary } = require("../utils/cloudinaryConfig");
 const ErrorResponse = require("../utils/ErrorResponse");
 
 const createRange = asyncWrapper(async (req, res, next) => {
@@ -10,21 +11,16 @@ const createRange = asyncWrapper(async (req, res, next) => {
   manufacturerRangeStart = Number(manufacturerRangeStart);
   manufacturerRangeEnd = Number(manufacturerRangeEnd);
 
-  console.log("Converted Values:", rangeStart, rangeEnd, manufacturerRangeStart, manufacturerRangeEnd);
-
   if (isNaN(rangeStart) || isNaN(rangeEnd) || isNaN(manufacturerRangeStart) || isNaN(manufacturerRangeEnd)) {
     throw new ErrorResponse("All range values must be valid numbers!", 400);
   }
 
   if (rangeEnd <= rangeStart) {
-    throw new ErrorResponse("rangeEnd muss größer als rangeStart sein!", 400);
+    throw new ErrorResponse("rangeEnd must be greater than rangeStart!", 400);
   }
 
   if (manufacturerRangeEnd <= manufacturerRangeStart) {
-    throw new ErrorResponse(
-      "manufacturerRangeEnd muss größer als manufacturerRangeStart sein!",
-      400
-    );
+    throw new ErrorResponse("manufacturerRangeEnd must be greater than manufacturerRangeStart!", 400);
   }
 
   const findRange = await Range.findOne({ rangeStart });
@@ -34,29 +30,9 @@ const createRange = asyncWrapper(async (req, res, next) => {
 
   const overlappingRange = await Range.findOne({
     $or: [
-      {
-        $or: [
-          { rangeStart: { $lte: rangeStart }, rangeEnd: { $gte: rangeStart } },
-          { rangeStart: { $lte: rangeEnd }, rangeEnd: { $gte: rangeEnd } },
-          { rangeStart: { $gte: rangeStart }, rangeEnd: { $lte: rangeEnd } },
-        ],
-      },
-      {
-        $or: [
-          {
-            manufacturerRangeStart: { $lte: manufacturerRangeStart },
-            manufacturerRangeEnd: { $gte: manufacturerRangeStart },
-          },
-          {
-            manufacturerRangeStart: { $lte: manufacturerRangeEnd },
-            manufacturerRangeEnd: { $gte: manufacturerRangeEnd },
-          },
-          {
-            manufacturerRangeStart: { $gte: manufacturerRangeStart },
-            manufacturerRangeEnd: { $lte: manufacturerRangeEnd },
-          },
-        ],
-      },
+      { rangeStart: { $lte: rangeStart }, rangeEnd: { $gte: rangeStart } },
+      { rangeStart: { $lte: rangeEnd }, rangeEnd: { $gte: rangeEnd } },
+      { rangeStart: { $gte: rangeStart }, rangeEnd: { $lte: rangeEnd } },
     ],
   });
 
@@ -64,21 +40,48 @@ const createRange = asyncWrapper(async (req, res, next) => {
     throw new ErrorResponse("Range overlaps with an existing entry!", 409);
   }
 
-  let certificateUrl = req.files?.internCertificate ? req.files.internCertificate[0].path : "";
-  let manufacturerCertificateUrl = req.files?.manufacturerCertificate
-    ? req.files.manufacturerCertificate[0].path
-    : "";
+  let certificateId = req.files?.internCertificate ? req.files.internCertificate[0].filename : "";
+  let manufacturerCertificateId = req.files?.manufacturerCertificate ? req.files.manufacturerCertificate[0].filename : "";
 
   const newRange = await Range.create({
     rangeStart,
     rangeEnd,
     manufacturerRangeStart,
     manufacturerRangeEnd,
-    internCertificate: certificateUrl,
-    manufacturerCertificate: manufacturerCertificateUrl,
+    internCertificate: certificateId,  // Store only the ID, not the URL
+    manufacturerCertificate: manufacturerCertificateId,
   });
 
   res.status(201).json(newRange);
+});
+
+const getCertificateUrl = asyncWrapper(async (req, res, next) => {
+  const { id, type } = req.params;
+
+  // Ensure user is authenticated
+  if (!req.user) {
+    throw new ErrorResponse("Unauthorized access!", 403);
+  }
+
+  const range = await Range.findById(id);
+  if (!range) {
+    throw new ErrorResponse("Range not found!", 404);
+  }
+
+  let publicId = type === "intern" ? range.internCertificate : range.manufacturerCertificate;
+
+  if (!publicId) {
+    throw new ErrorResponse("Certificate not found!", 404);
+  }
+
+  // Generate signed URL without expiration
+  const signedUrl = cloudinary.url(publicId, {
+    resource_type: "raw",
+    type: "authenticated",
+    sign_url: true,
+  });
+
+  res.json({ url: signedUrl });
 });
 
 
@@ -144,4 +147,5 @@ module.exports = {
   deleteRange,
   getRangeInfo,
   getAllRanges,
+  getCertificateUrl
 };

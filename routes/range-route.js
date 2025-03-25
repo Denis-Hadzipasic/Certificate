@@ -7,6 +7,7 @@ const {
   editRange,
   deleteRange,
   getRangeInfo,
+  getCertificateUrl,
 } = require("../controllers/range-controller.js");
 const { upload } = require("../utils/cloudinaryConfig.js");
 
@@ -24,5 +25,7 @@ rangeRoute.route("/createRange").post(
 rangeRoute.route("/editRange/:id").put(authenticate, editRange);
 rangeRoute.route("/deleteRange/:id").delete(authenticate, deleteRange);
 rangeRoute.route("/getRangeInfo/:id").get(authenticate, getRangeInfo);
+rangeRoute.route("/getCertificateUrl/:id/:type").get(authenticate, getCertificateUrl);
+
 
 module.exports = rangeRoute;
