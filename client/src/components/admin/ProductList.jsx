@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import Sidebar from "../Sidebar";
 import ProductListCard from "./ProductListCard";
-import axiosClient from "../../utils/axiosClient";
 
 export default function ProductList() {
   const {
@@ -23,7 +22,7 @@ export default function ProductList() {
   }, []);
 
   const formatNumber = (num) => {
-    const str = num.toString().replace(/\s/g, ""); // Remove existing spaces
+    const str = num.toString().replace(/\s/g, "");
     if (str.length === 5) {
       return `${str.slice(0, 2)} ${str.slice(2)}`;
     } else if (str.length === 6) {
@@ -35,7 +34,7 @@ export default function ProductList() {
   };
 
   const handleInternNumberChange = (e) => {
-    const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    const rawValue = e.target.value.replace(/\D/g, ""); 
     const formattedValue = formatNumber(rawValue);
     setInternNumber(formattedValue);
     setSearched(true);
@@ -46,7 +45,7 @@ export default function ProductList() {
   };
 
   const handleManufacturerNumberChange = (e) => {
-    const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    const rawValue = e.target.value.replace(/\D/g, ""); 
     const formattedValue = formatNumber(rawValue);
     setManufacturerNumber(formattedValue);
     setSearched(true);
