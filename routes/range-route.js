@@ -21,7 +21,14 @@ rangeRoute.route("/createRange").post(
   ]),
   createRange
 );
-rangeRoute.route("/editRange/:id").put(authenticate, editRange);
+rangeRoute.route("/editRange/:id").put(
+  authenticate,
+  upload.fields([
+    { name: "internCertificate", maxCount: 1 },
+    { name: "manufacturerCertificate", maxCount: 1 },
+  ]),
+  editRange
+);
 rangeRoute.route("/deleteRange/:id").delete(authenticate, deleteRange);
 rangeRoute.route("/getRangeInfo/:id").get(authenticate, getRangeInfo);
 

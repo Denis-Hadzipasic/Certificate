@@ -94,8 +94,7 @@ export default function ProductListCard({ product }) {
             {(() => {
               const matchingRange = rangeList?.find(
                 (range) =>
-                  (product.internNumber >= range.rangeStart &&
-                    product.internNumber <= range.rangeEnd) ||
+                  
                   (product.manufacturerNumber >= range.manufacturerRangeStart &&
                     product.manufacturerNumber <= range.manufacturerRangeEnd)
               );

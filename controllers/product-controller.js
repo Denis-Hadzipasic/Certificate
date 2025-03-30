@@ -75,32 +75,10 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
   // Construct search criteria if parameters exist
   const searchCriteria = {};
   if (internNumber) searchCriteria.internNumber = internNumber;
-  if (manufacturerNumber) searchCriteria.manufacturerNumber = manufacturerNumber;
+  if (manufacturerNumber)
+    searchCriteria.manufacturerNumber = manufacturerNumber;
 
   // Fetch products based on criteria (or all if no criteria provided)
-  const products = await Product.find(searchCriteria);
-
-  if (products.length === 0) {
-    return res
-      .status(404)
-      .json({ message: "No products found matching the criteria" });
-  }
-
-  return res.status(200).json(products);
-});
-
-
-const searchProduct = asyncWrapper(async (req, res, next) => {
-  const { internNumber, manufacturerNumber } = req.query;
-
-  const searchCriteria = {};
-  if (internNumber) {
-    searchCriteria.internNumber = internNumber;
-  }
-  if (manufacturerNumber) {
-    searchCriteria.manufacturerNumber = manufacturerNumber;
-  }
-
   const products = await Product.find(searchCriteria);
 
   if (products.length === 0) {
@@ -118,5 +96,4 @@ module.exports = {
   deleteProduct,
   getProductInfo,
   getAllProducts,
-  searchProduct,
 };

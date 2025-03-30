@@ -35,7 +35,6 @@ export default function AuthProvider({ children }) {
       )
       .then((response) => {
         setProductList(response.data);
-        console.log(internNumber)
       })
       .catch((error) => {
         console.log(error);
@@ -65,9 +64,13 @@ export default function AuthProvider({ children }) {
       .then((response) => {
         const loggedInUser = response.data;
         setUser(loggedInUser);
+        console.log(loggedInUser)
+
+        console.log("internNumber:", internNumber, "manufacturerNumber:", manufacturerNumber);
+
 
         return Promise.all([
-          axiosClient.get("/product/getAllProducts"),
+          axiosClient.get(`/product/getAllProducts?internNumber=${internNumber}&manufacturerNumber=${manufacturerNumber}`),
           axiosClient.get("/range/getAllRanges"),
         ]).then(([productResponse, rangeResponse]) => {
           setProductList(productResponse.data);
@@ -104,22 +107,6 @@ export default function AuthProvider({ children }) {
       });
   };
 
-  const searchProducts = async ({ internNumber, manufacturerNumber } = {}) => {
-    setIsLoading(true);
-    try {
-      const response = await axiosClient.get("/product/getAllProducts", {
-        params: { internNumber, manufacturerNumber }, // Attach search parameters
-      });
-
-      setProductList(response.data);
-    } catch (error) {
-      console.error("Error fetching searched products:", error);
-      setProductList([]); // Ensure empty results on failure
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -131,13 +118,12 @@ export default function AuthProvider({ children }) {
         rangeList,
         setProductList,
         setRangeList,
-        searchProducts,
         setInternNumber,
         setManufacturerNumber,
         searched,
-        setSearched, 
+        setSearched,
         internNumber,
-        manufacturerNumber
+        manufacturerNumber,
       }}
     >
       {children}
